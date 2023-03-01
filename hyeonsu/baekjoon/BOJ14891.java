@@ -45,11 +45,13 @@ public class BOJ14891 {
     }
 
     static void exec(int gearNum, int dir) {
-        // 4가지의 톱니바퀴가 어느 방향으로 회전할껀지 알아야한다.
+        // 큐를 사용해서 시작점 기준으로 나머지의 톱니바퀴가 어느 방향으로 회전할껀지 알아야한다.
         q = new ArrayDeque<>();
         boolean[] checked = new boolean[4];
+        boolean[] isTurn = new boolean[4];
         int[] gearDir = new int[4];
        checked[gearNum] = true;
+       isTurn[gearNum] = true;
        gearDir[gearNum] = dir;
 
        q.add(new Gear(gearNum, dir, true));
@@ -63,16 +65,17 @@ public class BOJ14891 {
                if (checked[nextNum]) continue;
                if (!cur.isTurn) continue;
                if (i == 0 && gears[nextNum][2] == gears[cur.num][6]) continue;
-               if (i == 1 && gears[nextNum][6] == gears[nextNum][2]) continue;
+               if (i == 1 && gears[nextNum][6] == gears[cur.num][2]) continue;
 
                checked[nextNum] = true;
-               gearDir[nextNum] = cur.num == LEFT ? RIGHT : LEFT;
-               q.add(new Gear(nextNum, cur.num == LEFT ? RIGHT : LEFT, true));
+               isTurn[nextNum] = true;
+               gearDir[nextNum] = cur.dir == LEFT ? RIGHT : LEFT;
+               q.add(new Gear(nextNum, cur.dir == LEFT ? RIGHT : LEFT, true));
            }
        }
 
         for (int i = 0; i < 4; i++) {
-            rotate(i, gearDir[i]);
+            if (isTurn[i]) rotate(i, gearDir[i]);
         }
     }
 
