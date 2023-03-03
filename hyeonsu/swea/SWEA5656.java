@@ -4,8 +4,8 @@ import java.io.*;
 import java.util.*;
 
 public class SWEA5656 {
-    static int[] dx = {1, 0, 0};
-    static int[] dy = {0, -1, 1};
+    static int[] dx = {-1, 1, 0, 0};
+    static int[] dy = {0, 0, -1, 1};
 
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -34,7 +34,6 @@ public class SWEA5656 {
             }
 
             //로직
-            //복사 배열 생성 및 깊은 복사 진행
             perm(0,map);
 
             bw.write("#" + tNum++ + " " + ans + "\n");
@@ -55,11 +54,6 @@ public class SWEA5656 {
                     if (tmp[i][j] > 0) cnt++;
                 }
             }
-            for (int[] a : tmp) {
-                System.out.println(Arrays.toString(a));
-            }
-            System.out.println("순서 : " + Arrays.toString(shotOrder));
-            System.out.println("=================");
             ans = Math.min(ans, cnt);
             return;
         }
@@ -88,6 +82,7 @@ public class SWEA5656 {
                         if (x == h - 1) break;
                         if (tmp[x + 1][y] > 0) break;
                         tmp[x + 1][y] = tmp[x][y];
+                        tmp[x][y] = 0;
                         x++;
                     }
                 }
@@ -113,14 +108,14 @@ public class SWEA5656 {
         while (!q.isEmpty()) {
             Point p = q.poll();
 
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 4; i++) {
                 int nx = p.x;
                 int ny = p.y;
                 for (int j = 0; j < p.num - 1; j++) {
                     nx += dx[i];
                     ny += dy[i];
 
-                    if (nx < 0 || nx >= h || ny < 0 || ny >= w) continue;
+                    if (nx < 0 || nx >= h || ny < 0 || ny >= w) break;
                     if (map[nx][ny] == 0) continue;
                     if (v[nx][ny]) continue;
                     v[nx][ny] = true;
