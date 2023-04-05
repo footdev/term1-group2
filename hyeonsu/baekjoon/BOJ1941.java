@@ -17,10 +17,13 @@ public class BOJ1941 {
 	
 	public static void main(String[] args) throws IOException {
 		//입력 초기화
-		for (char[] a : map) {
-			a = br.readLine().toCharArray();
+		for (int i = 0; i < N; i++) {
+			char[] tmp = br.readLine().toCharArray();
+			for (int j = 0; j < N; j++) {
+				map[i][j] = tmp[j];
+			}
 		}
-		
+
 		//로직
 		combi(0, 0, 0, new int[M]);
 		
@@ -29,10 +32,9 @@ public class BOJ1941 {
 	}
 
 	static void combi(int idx, int k, int dasom, int[] sel) {
-		if (dasom > 4) return;
-		
 		//basis
 		if (k == M) {
+			if (dasom < 4) return;
 			boolean[] v = new boolean[M];
 			v[0] = true;
 			dfs(sel[0], v, sel);
@@ -46,14 +48,17 @@ public class BOJ1941 {
 				}
 			}
 			
-			if (flag) ans++;
+			if (flag) {
+				ans++;
+				System.out.println(Arrays.toString(sel));
+			}
 			return;
 		}
 		
 		//inductive
 		for (int i = idx; i < N * N; i++) {
 			sel[k] = i;
-			combi(i + 1, k + 1, map[i / 5][i % 5] == 'S' ? dasom + 1 :dasom, sel);
+			combi(i + 1, k + 1, map[i / 5][i % 5] == 'S' ? dasom + 1 : dasom, sel);
 		}
 	}
 
@@ -61,7 +66,7 @@ public class BOJ1941 {
 		for (int i = 0; i < 4; i++) {
 			int nx = cur / 5 + dx[i];
 			int ny = cur % 5 + dy[i];
-			
+
 			if (nx < 0 || nx >= N || ny < 0 || ny >= N) continue;
 
 			//현재 위치에서 상, 하, 좌, 우 인접한 n번째 학생
