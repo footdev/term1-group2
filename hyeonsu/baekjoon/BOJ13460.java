@@ -99,7 +99,7 @@ public class BOJ13460 {
 				copy[first.x][first.y] = '.';
 				if (copy[nx][ny] != 'O') copy[nx][ny] = first.equals(cur.red) ? 'R' : 'B';
 				
-				Point nextRed = new Point(nx, ny);
+				Point nextFirst = new Point(nx, ny);
 				
 				//second도 기울인다.
 				nx = second.x;
@@ -114,14 +114,18 @@ public class BOJ13460 {
 				copy[second.x][second.y] = '.';
 				if (copy[nx][ny] != 'O') copy[nx][ny] = second.equals(cur.red) ? 'R' : 'B';
 				
-				Point nextBlue = new Point(nx, ny);
+				Point nextSecond = new Point(nx, ny);
 
-				if (v[0][nextRed.x][nextRed.y] && v[1][nextBlue.x][nextBlue.y]) continue;
-				if (nextBlue.equals(hole)) continue;
+				if (v[first.equals(cur.red) ? 0 : 1][nextFirst.x][nextFirst.y] && v[second.equals(cur.red) ? 0 : 1][nextSecond.x][nextSecond.y]) continue;
+				if (first.equals(cur.red)) {
+					if (nextSecond.equals(hole)) continue;
+				} else {
+					if (nextFirst.equals(hole)) continue;
+				}
 				
-				v[0][nextRed.x][nextRed.y] = true;
-				v[1][nextBlue.x][nextBlue.y] = true;
-				q.add(new State(nextRed, nextBlue, cur.cnt + 1, copy));
+				v[first.equals(cur.red) ? 0 : 1][nextFirst.x][nextFirst.y] = true;
+				v[second.equals(cur.blue) ? 1 : 0][nextSecond.x][nextSecond.y] = true;
+				q.add(new State(first.equals(cur.red) ? nextFirst : nextSecond, second.equals(cur.blue) ? nextSecond : nextFirst, cur.cnt + 1, copy));
 			}
 			
 		}
